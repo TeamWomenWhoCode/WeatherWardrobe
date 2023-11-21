@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import tw from 'twrnc';
 
 const LoginScreen = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+
 	const router = useRouter();
+
+	const signIn = async () => {
+		setLoading(true);
+		try {
+			
+		} catch (err) {
+			console.log(err);
+			alert(`Login failed: ${err.message}`);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<View style={tw`h-full bg-[#ffb6b9]`}>
@@ -38,6 +54,9 @@ const LoginScreen = () => {
 				}}
 			>
 				<TextInput
+					value={email}
+					autoCapitalize='none'
+					onChangeText={(text) => setEmail(text)}
 					placeholder='Email'
 					style={{
 						backgroundColor: 'white',
@@ -49,6 +68,9 @@ const LoginScreen = () => {
 					}}
 				/>
 				<TextInput
+					value={password}
+					onChangeText={(text) => setPassword(text)}
+					secureTextEntry={true}
 					placeholder='Password'
 					style={{
 						backgroundColor: 'white',
@@ -58,7 +80,6 @@ const LoginScreen = () => {
 						borderRadius: 10,
 						paddingLeft: 10,
 					}}
-					secureTextEntry={true}
 				/>
 				<TouchableOpacity
 					onPress={() => router.push('/one')}

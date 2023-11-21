@@ -24,11 +24,8 @@ const ProfileScreen = () => {
 						<FontAwesome name='user-circle-o' size={30} color='black' />
 					</TouchableOpacity>
 					<Text style={styles.profileName}>Jane Doe</Text>
-					<TouchableOpacity
-						onPress={() => router.push('/')}
-						style={styles.buttonWrapper}
-					>
-						<Button title='Logout' />
+					<TouchableOpacity style={styles.buttonWrapper}>
+						<Button title='Logout' onPress={() => router.push('/')} />
 					</TouchableOpacity>
 				</View>
 
