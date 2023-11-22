@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import BoxModal from './BoxModal';
+import { categories } from '../utils/data';
 
 const BoxSwiper = () => {
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,28 +33,12 @@ const BoxSwiper = () => {
 		setIsSlideUpVisible(true);
 	};
 
-	const categories = [
-		{
-			name: 'Tops',
-			imageSource: require('../../assets/icons8-clothes-64.png'),
-		},
-		{
-			name: 'Bottoms',
-			imageSource: require('../../assets/icons8-womens-pants-96.png'),
-		},
-		{ name: 'Shoes', imageSource: require('../../assets/icons8-shoes-96.png') },
-		{
-			name: 'Accessories',
-			imageSource: require('../../assets/icons8-beret-96.png'),
-		},
-	];
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					'http://127.0.0.1:5500/WeatherWardrobe/app/api/scraped_data.json'
-				); // Replace with your API endpoint
+					'https://tishshaw.github.io/WeatherWardrobe-API/api.json'
+				);
 				const jsonData = await response.json();
 				setData(jsonData);
 			} catch (error) {
