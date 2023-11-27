@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import db from '@react-native-firebase/database';
 import tw from 'twrnc';
 
 const RegisterScreen = () => {
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+
 	const router = useRouter();
+
+	const signUp = async () => {
+		setLoading(true);
+		if (email && password) {
+			try {
+				const response = await auth().createUserWithEmailAndPassword(
+					email,
+					password
+				);
+
+				if (response.user) {
+					await createProfile(response);
+				}
+			} catch (err) {
+				console.log(err);
+				alert(`Registration failed: ${err.message}`);
+			} finally {
+				setLoading(false);
+			}
+		}
+	};
+
+	const createProfile = async () => {
+		db().ref(`/users/${response.user.uid}`).set({ firstName }, { lastName });
+	};
 
 	return (
 		<View style={tw`h-full bg-[#ffb6b9]`}>
@@ -37,6 +70,8 @@ const RegisterScreen = () => {
 				}}
 			>
 				<TextInput
+					value={firstName}
+					onChangeText={(text) => setFirstName(text)}
 					placeholder='First Name'
 					style={{
 						backgroundColor: 'white',
@@ -48,6 +83,8 @@ const RegisterScreen = () => {
 					}}
 				/>
 				<TextInput
+					value={lastName}
+					onChangeText={(text) => setLastName(text)}
 					placeholder='Last Name'
 					style={{
 						backgroundColor: 'white',
@@ -59,6 +96,8 @@ const RegisterScreen = () => {
 					}}
 				/>
 				<TextInput
+					value={email}
+					onChangeText={(text) => setEmail(text)}
 					placeholder='Email'
 					style={{
 						backgroundColor: 'white',
@@ -70,6 +109,9 @@ const RegisterScreen = () => {
 					}}
 				/>
 				<TextInput
+					value={password}
+					onChangeText={(text) => setPassword(text)}
+					secureTextEntry={true}
 					placeholder='Password'
 					style={{
 						backgroundColor: 'white',
@@ -79,10 +121,9 @@ const RegisterScreen = () => {
 						borderRadius: 10,
 						paddingLeft: 10,
 					}}
-					secureTextEntry={true}
 				/>
 				<TouchableOpacity
-					onPress={() => router.push('/')}
+					onPress={signUp}
 					style={{
 						backgroundColor: 'white',
 						borderRadius: 10,
